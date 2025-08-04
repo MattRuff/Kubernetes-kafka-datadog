@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: generate-load
+spec:
+  template:
+    spec:
+      containers:
+        - name: curl-loader
+          image: curlimages/curl:latest
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              for i in $(seq 1 100); do
+                curl -X POST http://microservice-a/produce \
+                  -H "Content-Type: application/json" \
+                  -d "{\"message\":\"load test $i\"}"
+                sleep 0.2
+              done
+      restartPolicy: Never
+  backoffLimit: 2

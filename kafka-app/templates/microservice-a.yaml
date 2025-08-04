@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: microservice-a
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: microservice-a
+  template:
+    metadata:
+      labels:
+        app: microservice-a
+        type: microservice
+    spec:
+      containers:
+        - name: microservice-a
+          image: {{ .Values.microserviceA.image }}
+          ports:
+            - containerPort: {{ .Values.microserviceA.port }}
+          env:
+          - name: DD_DATA_STREAMS_ENABLED
+            value: "true"
+          - name: DD_TRACE_REMOVE_INTEGRATION_SERVICE_NAMES_ENABLED
+            value: "true"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: microservice-a
+spec:
+  selector:
+    app: microservice-a
+  ports:
+    - port: 80
+      targetPort: {{ .Values.microserviceA.port }}

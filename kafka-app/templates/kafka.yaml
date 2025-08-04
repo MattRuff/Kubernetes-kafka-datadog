@@ -1,0 +1,77 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka
+spec:
+  ports:
+    - port: {{ .Values.kafka.port }}
+  selector:
+    app: kafka
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka
+spec:
+  
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka
+  template:
+    metadata:
+      annotations:
+        ad.datadoghq.com/kafka.checks: |
+          {
+            "kafka": {
+              "init_config": {
+                "is_jmx": true,
+                "collect_default_metrics": true
+              },
+              "instances": [{
+                "host": "%%host%%",
+                "port": "9999"
+              }]
+            }
+          }  
+      labels:
+        app: kafka
+    spec:
+      containers:
+        - name: kafka
+          image: {{ .Values.kafka.image }}
+          env:
+          - name: KAFKA_KRAFT_MODE
+            value: "true"
+          - name: KAFKA_CFG_NODE_ID
+            value: "1"
+          - name: KAFKA_CFG_PROCESS_ROLES
+            value: "controller,broker"
+          - name: KAFKA_CFG_CONTROLLER_QUORUM_VOTERS
+            value: "1@localhost:9093"
+          - name: KAFKA_CFG_LISTENERS
+            value: "PLAINTEXT://:9092,CONTROLLER://:9093"
+          - name: KAFKA_CFG_ADVERTISED_LISTENERS
+            value: "PLAINTEXT://kafka:9092"
+          - name: KAFKA_CFG_CONTROLLER_LISTENER_NAMES
+            value: "CONTROLLER"
+          - name: KAFKA_KRAFT_CLUSTER_ID
+            value: "kraft-cluster-12345"
+          - name: KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE
+            value: "true"
+          - name: ALLOW_PLAINTEXT_LISTENER
+            value: "yes"
+          - name: POD_IP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
+          - name: JAVA_TOOL_OPTIONS
+            value: >-
+              -Dcom.sun.management.jmxremote
+              -Dcom.sun.management.jmxremote.authenticate=false
+              -Dcom.sun.management.jmxremote.ssl=false
+              -Dcom.sun.management.jmxremote.local.only=false
+              -Dcom.sun.management.jmxremote.port=9999
+              -Dcom.sun.management.jmxremote.rmi.port=9999
+              -Djava.rmi.server.hostname=$(POD_IP)   
+

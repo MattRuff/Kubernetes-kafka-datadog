@@ -1,0 +1,12 @@
+replicaCount: 1
+
+microserviceA:
+  image: docker.io/matthewruyffelaert667/kafka-microservice-a:3
+  port: 5000
+
+microserviceB:
+  image: docker.io/matthewruyffelaert667/kafka-microservice-b:3
+
+kafka:
+  image: bitnami/kafka:latest
+  port: 9092
