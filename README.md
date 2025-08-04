@@ -32,11 +32,9 @@ helm install kafka-lab ./kafka-app -n kafka
 ```bash
 kubectl get pods
 
-kubectl exec -n kafka testing -- curl -X POST microservice-a/produce -H "Content-Type: application/json" -d '{"message":"hello kafka"}
+kubectl apply -f ./microservices/load-generate/generate.yaml
 
-
-kubectl port-forward svc/microservice-b 5000:5000
-curl http://localhost:5000/messages
-
-kubectl port-forward svc/microservice-
+kubectl port-forward svc/microservice-b -n kafka 8080:80
 ```
+
+Go to http://localhost:8080/api/messages to see messages
