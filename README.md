@@ -42,7 +42,7 @@ kubectl apply -f ./microservices/load-generate/generate.yaml
 kubectl port-forward svc/microservice-a -n kafka 8080:80
 ```
 
-Use the UI to send normal messages, error messages or generate load (100 messages quickly)
+Go to http://localhost:8080/ Use the UI to send normal messages, error messages or generate load (100 messages quickly)
 
 ### Within Datadog 
 
