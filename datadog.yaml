@@ -21,38 +21,28 @@ spec:
       instrumentation:
         enabled: true
         targets:
-        - name: "microservice-a"
-          namespaceSelector:
-            matchNames:
-            - "kafka"
+        - name: "microservicea"
           podSelector:
             matchLabels:
-              app: "microservice-a"
+              type: producer
           ddTraceVersions:
             python: "default"
           ddTraceConfigs:
             - name: "DD_PROFILING_ENABLED"
               value: "auto"
-            - name: "DSM_ENABLED"
-              value: "true"
             - name: "DD_SERVICE"
               value: "producer"
-        - name: "microservice-a"
-          namespaceSelector:
-            matchNames:
-            - "kafka"
+        - name: "microservice-b"
           podSelector:
             matchLabels:
-              app: "microservice-b"
+              type: consumer
           ddTraceVersions:
             python: "default"
           ddTraceConfigs:
             - name: "DD_PROFILING_ENABLED"
               value: "auto"
-            - name: "DSM_ENABLED"
-              value: "true"
             - name: "DD_SERVICE"
-              value: "consumer"
+              value: "consumers"
 
  
     logCollection:

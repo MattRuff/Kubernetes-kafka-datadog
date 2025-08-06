@@ -15,11 +15,15 @@ This lab sets up a Kafka-based microservices application and instruments it with
 - `kubectl` configured to point to your cluster
 - Helm v3+
 - Datadog API key
-- Datadog Kubernetes integration enabled
+
 
 ### 2. 📥 Install the Datadog Agent
 
 ```bash
+helm repo add datadog https://helm.datadoghq.com
+helm install datadog-operator datadog/datadog-operator
+kubectl create secret generic datadog-secret --from-literal api-key=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
 kubectl create namespace datadog
 kubectl apply -f datadog.yaml -n datadog
 ```

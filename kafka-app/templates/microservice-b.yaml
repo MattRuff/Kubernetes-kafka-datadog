@@ -11,7 +11,7 @@ spec:
     metadata:
       labels:
         app: microservice-b
-        type: microservice
+        type: consumer
     spec:
       containers:
         - name: microservice-b

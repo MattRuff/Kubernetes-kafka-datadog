@@ -10,8 +10,8 @@ spec:
   template:
     metadata:
       labels:
-        app: microservice-a
-        type: microservice
+        app: "microservice-a"
+        type: producer
     spec:
       containers:
         - name: microservice-a
