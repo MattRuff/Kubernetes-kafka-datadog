@@ -43,3 +43,36 @@ kubectl port-forward svc/microservice-b -n kafka 8080:80
 ```
 
 Go to http://localhost:8080/api/messages to see messages
+
+Manually send messages with: 
+```bash
+kubectl exec -n kafka  -- curl -X POST microservice-a/produce -H "Content-Type: application/json" -d '{"message":"hello kafka"}'
+```
+
+### Within Datadog 
+
+See Pods Running in Kubernetes Explorer: 
+https://app.datadoghq.com/orchestration/explorer/pod?query=kube_namespace%3Akafka&explorer-na-groups=false 
+![alt text](image.png)
+
+
+See APM traces in Service Catalog
+https://app.datadoghq.com/software?env=%2A&fromUser=true&start=1754419847011&end=1754506247011
+![alt text](image-1.png)
+
+
+See Kafka Metrics 
+https://app.datadoghq.com/dash/integration/50/kafka-zookeeper-and-kafka-consumer-overview?fromUser=false&refresh_mode=sliding&from_ts=1754505992671&to_ts=1754506292671&live=true
+![alt text](image-2.png)
+
+
+See Data Stream Metrics 
+https://app.datadoghq.com/data-streams/map?query=&collapse_pipeline=true&fromUser=false&remove_pipelines=true&start=1754502736349&end=1754506336349&paused=false
+![alt text](image-3.png)
+
+
+Find where the configuration is within the DD App for:
+- Data Streams Monitoring
+- Kafka Integration 
+- Single Step Instrumentation Instrumentation
+
