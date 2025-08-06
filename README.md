@@ -77,6 +77,10 @@ See Data Stream Metrics
 https://app.datadoghq.com/data-streams/map?query=&collapse_pipeline=true&fromUser=false&remove_pipelines=true&start=1754502736349&end=1754506336349&paused=false
 ![alt text](image-3.png)
 
+See Error Tracking: 
+https://app.datadoghq.com/error-tracking?query=&refresh_mode=sliding&source=backend&from_ts=1754422130989&to_ts=1754508530989&live=true
+![alt text](image-4.png)
+
 
 Find where the configuration is within the DD App for:
 - Data Streams Monitoring
