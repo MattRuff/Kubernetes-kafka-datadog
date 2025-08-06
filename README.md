@@ -44,10 +44,17 @@ kubectl port-forward svc/microservice-b -n kafka 8080:80
 
 Go to http://localhost:8080/api/messages to see messages
 
-Manually send messages with: 
+### Manually send messages with: 
+Normal Message:
 ```bash
 kubectl exec -n kafka  -- curl -X POST microservice-a/produce -H "Content-Type: application/json" -d '{"message":"hello kafka"}'
 ```
+Error Message:
+```bash
+kubectl exec -n kafka testing -- curl -X POST microservice-a/produce -H "Content-Type: application/json" -d '{"message":"trigger_error"}'
+```
+
+
 
 ### Within Datadog 
 
