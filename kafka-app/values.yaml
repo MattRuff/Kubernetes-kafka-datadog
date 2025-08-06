@@ -1,7 +1,7 @@
 replicaCount: 1
 
 microserviceA:
-  image: docker.io/matthewruyffelaert667/kafka-microservice-a:5
+  image: docker.io/matthewruyffelaert667/kafka-microservice-a:8
   port: 5000
 
 microserviceB:

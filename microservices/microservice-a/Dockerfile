@@ -6,7 +6,7 @@ ENV DD_GIT_REPOSITORY_URL=${DD_GIT_REPOSITORY_URL}
 ENV DD_GIT_COMMIT_SHA=${DD_GIT_COMMIT_SHA}
 
 RUN apt-get update && apt-get install -y librdkafka-dev \
- && pip install flask confluent-kafka
+ && pip install flask confluent-kafka requests
 
 WORKDIR /app
 COPY . .

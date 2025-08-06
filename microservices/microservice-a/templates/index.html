@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Kafka Lab</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+  </style>
+</head>
+<body>
+  <h1>Kafka Lab</h1>
+
+  <div>
+    <h3>Send a Message</h3>
+    <input type="text" id="message" placeholder="Enter message">
+    <button onclick="sendMessage()">Send</button>
+  </div>
+
+  <div>
+    <h3>Send Error (trigger stack trace)</h3>
+    <button onclick="sendError()">Trigger Error</button>
+  </div>
+
+  <div>
+    <h3>Generate Load (100 messages)</h3>
+    <button onclick="generateLoad()">Generate Load</button>
+  </div>
+
+  <pre id="response" style="margin-top:20px; background:#eee; padding:10px;"></pre>
+
+  <hr>
+  <h3>Consumed Messages</h3>
+  <button onclick="fetchMessages()">Refresh Messages</button>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Message</th>
+        <th>Lag (ms)</th>
+      </tr>
+    </thead>
+    <tbody id="messages-table">
+    </tbody>
+  </table>
+
+  <script>
+    async function sendMessage() {
+      const msg = document.getElementById("message").value;
+      const res = await fetch("/produce", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: msg })
+      });
+      document.getElementById("response").textContent = await res.text();
+    }
+
+    async function sendError() {
+      const res = await fetch("/produce", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: "trigger_error" })
+      });
+      document.getElementById("response").textContent = await res.text();
+    }
+
+    async function generateLoad() {
+      const res = await fetch("/generate-load", { method: "POST" });
+      document.getElementById("response").textContent = await res.text();
+    }
+
+    async function fetchMessages() {
+      const res = await fetch("/messages");
+      const messages = await res.json();
+      const table = document.getElementById("messages-table");
+      table.innerHTML = "";
+      messages.forEach(msg => {
+        const row = document.createElement("tr");
+        row.innerHTML = `<td>${msg.value}</td><td>${msg.latency_ms}</td>`;
+        table.appendChild(row);
+      });
+    }
+  </script>
+</body>
+</html>
