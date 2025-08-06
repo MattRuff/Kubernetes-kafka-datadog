@@ -26,6 +26,7 @@ kubectl apply -f datadog.yaml -n datadog
 
 ### 2. 📥 Install Application
 ```bash
+kubectl create namespace kafka
 helm install kafka-lab ./kafka-app -n kafka
 ```
 ### After installation
